@@ -18,8 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', 'login');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('/products', ProductsController::class);
+  Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
+
+  Route::middleware(('is_admin'))->group(function () {
+    Route::get('products/create', [ProductsController::class, 'create'])->name('products.create');
+    Route::post('products', [ProductsController::class, 'store'])->name('products.store');
+  });
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

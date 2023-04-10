@@ -12,13 +12,21 @@ use Tests\TestCase;
 class ProductTest extends TestCase
 {
     use RefreshDatabase; // Do not run test in live database
-    /**
-     * A basic feature test example.
-     */
+
+    private User $user;
+    private User $admin;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = $this->createUser();
+        $this->admin = $this->createUser(isAdmin: true);
+    }
+
     public function test_productpage_contains_empty_table(): void
     {
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertSee('No product found');
@@ -26,13 +34,12 @@ class ProductTest extends TestCase
 
     public function test_productpage_contains_non_empty_table(): void
     {
-        $user = User::factory()->create();
         $product = Products::create([
             'name' => 'iPhone',
             'price' => 800
         ]);
 
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
         $response->assertStatus(200);
         $response->assertDontSee('No product found');
         $response->assertViewHas('products', function ($collection) use ($product) {
@@ -42,15 +49,53 @@ class ProductTest extends TestCase
 
     public function test_paginated_products_doesnt_contain_11th_record()
     {
-        $user = User::factory()->create();
         $products = Products::factory(11)->create();
         $lastProduct = $products->last();
 
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertViewHas('products', function ($collection) use ($lastProduct) {
             return !$collection->contains($lastProduct);
         });
     }
+
+    public function test_admin_can_see_products_create_button()
+    {
+        $response = $this->actingAs($this->admin)->get('/products');
+
+        $response->assertStatus(200);
+        $response->assertSee('Add new product');
+    }
+
+    public function test_non_admin_cannot_see_products_create_button()
+    {
+
+        $response = $this->actingAs($this->user)->get('/products');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Add new product');
+    }
+
+    public function test_admin_can_access_products_create_page()
+    {
+        $response = $this->actingAs($this->admin)->get('/products/create');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_cannot_access_products_create_page()
+    {
+        $response = $this->actingAs($this->user)->get('/products/create');
+
+        $response->assertStatus(403);
+    }
+
+    private function createUser(bool $isAdmin = false): User
+    {
+        return User::factory()->create([
+            'is_admin' => $isAdmin
+        ]);
+    }
+
 }
