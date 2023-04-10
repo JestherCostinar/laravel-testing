@@ -13,6 +13,15 @@ php artisan test
 - <strong>Feature Test</strong> - Most of the project test is feature test, which means test the feature whether it will work and not.
 - <strong>Unit Test</strong> - Are more about unit of the code. example is test the function of the code whether it will work correction. function is 1 unit of project.
 
+## Unit Tests
+The purpose of unit test is to test the small portion or unit of your code. Example is function/method.
+
+To create unit test, the command is: 
+```
+php artisan make:test CurrencyTest --unit
+```
+
+
 ## 👨‍💻Contact Me 🚀🔵
 - Email - jesther.jc15@gmail.com
 - LinkedIn - https://www.linkedin.com/in/jesther-costinar/

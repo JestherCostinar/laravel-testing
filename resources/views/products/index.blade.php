@@ -13,16 +13,17 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-4 font-medium text-gray-900">Name</th>
-                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price</th>
+                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price (USD)</th>
+                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price (EUR)</th>
                             <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                         @forelse ($products as $product)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4">{{ __($product->name) }}
-                                </td>
-                                <td class="px-6 py-4">{{ __($product->price) }}</td>
+                                <td class="px-6 py-4">{{ __($product->name) }}</td>
+                                <td class="px-6 py-4">{{ number_format($product->price, 2) }}</td>
+                                <td class="px-6 py-4">{{ $product->price_eur }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex justify-end gap-4">
                                         <a x-data="{ tooltip: 'Delete' }" href="#">
