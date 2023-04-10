@@ -54,6 +54,7 @@
                     </tbody>
                 </table>
             </div>
+            {{ $products->links() }}
         </div>
     </div>
 </x-app-layout>

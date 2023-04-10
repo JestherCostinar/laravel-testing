@@ -15,10 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', 'products');
+Route::redirect('/', 'login');
 
-Route::resource('/products', ProductsController::class);
-
+Route::middleware('auth')->group(function () {
+    Route::resource('/products', ProductsController::class);
+});
 
 
 require __DIR__.'/auth.php';
