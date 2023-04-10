@@ -120,7 +120,20 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('value="' . $product->name . '"', false);
         $response->assertSee('value="' . $product->price . '"', false);
-        $response->assertViewHas('product', $product); 
+        $response->assertViewHas('product', $product);
+    }
+
+    public function test_product_update_validation_error_redirect_back_to_form()
+    {
+        $product = Products::factory()->create();
+
+        $response = $this->actingAs($this->admin)->put('products/' . $product->id, [
+            'name' => '',
+            'price' => ''
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertInvalid(['name', 'price']);
     }
 
     private function createUser(bool $isAdmin = false): User

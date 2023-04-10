@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Products;
 use Illuminate\Http\Request;
 
@@ -55,9 +56,11 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, products $products)
+    public function update(UpdateProductRequest $request, Products $product)
     {
-        dd($request);
+        $product->update($request->validated());
+
+        return redirect()->route('products.index');
     }
 
     /**
