@@ -39,7 +39,7 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(products $products)
+    public function show(Products $products)
     {
         //
     }
@@ -47,9 +47,9 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(products $products)
+    public function edit(Products $product)
     {
-        //
+        return view('products.update', compact('product'));
     }
 
     /**
@@ -57,13 +57,13 @@ class ProductsController extends Controller
      */
     public function update(Request $request, products $products)
     {
-        //
+        dd($request);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(products $products)
+    public function destroy(Products $products)
     {
         //
     }
