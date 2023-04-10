@@ -21,6 +21,15 @@ To create unit test, the command is:
 php artisan make:test CurrencyTest --unit
 ```
 
+## Run Specific Test
+To execute specific test, the command is: 
+```
+php artisan test --filter="Testfilename"
+```
+
+## Test Driven Development (TDD)
+Test Driven Development (TDD) is a way of doing the testing first before the actual code. It's like thinking all the possible scenario first and test it before doing it in actual coding.
+
 
 ## 👨‍💻Contact Me 🚀🔵
 - Email - jesther.jc15@gmail.com
